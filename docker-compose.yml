@@ -1,0 +1,85 @@
+version: '3.9'
+
+services:
+
+  # ─── Oracle XE 21c ──────────────────────────────────────────────────────────
+  oracle-db:
+    image: gvenzl/oracle-xe:21-slim
+    container_name: wallet-oracle
+    environment:
+      ORACLE_PASSWORD: WalletOracle123!
+      ORACLE_DATABASE: WALLETDB
+      APP_USER: wallet_user
+      APP_USER_PASSWORD: wallet_pass
+    ports:
+      - "1521:1521"
+    volumes:
+      - oracle_data:/opt/oracle/oradata
+    healthcheck:
+      test: ["CMD", "healthcheck.sh"]
+      interval: 30s
+      timeout: 10s
+      retries: 20
+      start_period: 120s
+    networks:
+      - wallet-network
+
+  # ─── Redis 7 ────────────────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: wallet-redis
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - wallet-network
+
+  # ─── Spring Boot App ─────────────────────────────────────────────────────────
+  wallet-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: wallet-app
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      ORACLE_HOST: oracle-db
+      ORACLE_PORT: 1521
+      ORACLE_SERVICE: XEPDB1
+      ORACLE_USER: wallet_user
+      ORACLE_PASSWORD: wallet_pass
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      JWT_SECRET: MyS3cur3JwtS3cr3tK3yF0rEnterpr1seD1g1talWall3t2024!
+      ENCRYPTION_KEY: EnterpriseWallet256BitAESKeyForPCI-DSS!2024
+      ENCRYPTION_SALT: WalletSalt2024!
+      FRONTEND_URL: http://localhost:4200
+    depends_on:
+      oracle-db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    networks:
+      - wallet-network
+
+volumes:
+  oracle_data:
+  redis_data:
+
+networks:
+  wallet-network:
+    driver: bridge

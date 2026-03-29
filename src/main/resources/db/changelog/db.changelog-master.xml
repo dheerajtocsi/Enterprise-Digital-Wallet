@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <include file="classpath:db/changelog/V001__create_users.sql"/>
+    <include file="classpath:db/changelog/V002__create_wallets.sql"/>
+    <include file="classpath:db/changelog/V003__create_transactions.sql"/>
+    <include file="classpath:db/changelog/V004__create_ledger.sql"/>
+    <include file="classpath:db/changelog/V005__create_refresh_tokens.sql"/>
+    <include file="classpath:db/changelog/V006__create_indexes.sql"/>
+
+</databaseChangeLog>

@@ -1,0 +1,41 @@
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+  # ─── Oracle Production DB ──────────────────────────────────────────────────
+  datasource:
+    url: jdbc:oracle:thin:@${ORACLE_HOST:localhost}:${ORACLE_PORT:1521}/${ORACLE_SERVICE:XEPDB1}
+    username: ${ORACLE_USER:wallet_user}
+    password: ${ORACLE_PASSWORD:wallet_pass}
+    driver-class-name: oracle.jdbc.OracleDriver
+    hikari:
+      maximum-pool-size: 50
+      minimum-idle: 10
+      idle-timeout: 300000
+      connection-timeout: 20000
+      max-lifetime: 1200000
+      pool-name: WalletHikariPool
+      data-source-properties:
+        oracle.jdbc.implicitStatementCacheSize: 50
+        oracle.net.CONNECT_TIMEOUT: 5000
+        oracle.jdbc.ReadTimeout: 30000
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.OracleDialect
+    show-sql: false
+
+  data:
+    redis:
+      host: ${REDIS_HOST:redis}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+
+logging:
+  level:
+    com.enterprise.wallet: INFO
+    org.springframework.security: WARN

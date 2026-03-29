@@ -1,0 +1,47 @@
+spring:
+  config:
+    activate:
+      on-profile: local
+
+  # ─── H2 (Local dev — no Oracle needed) ───────────────────────────────────
+  datasource:
+    url: jdbc:h2:mem:walletdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=Oracle;NON_KEYWORDS=VALUE
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      idle-timeout: 30000
+      connection-timeout: 20000
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        boot:
+          allow_jdbc_metadata_access: false
+    show-sql: true
+
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.xml
+
+  # ─── Redis (local) ─────────────────────────────────────────────────────────
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password:
+
+logging:
+  level:
+    com.enterprise.wallet: DEBUG
+    org.springframework.security: INFO
+    org.hibernate.SQL: DEBUG
