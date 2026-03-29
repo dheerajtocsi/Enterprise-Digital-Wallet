@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Enterprise Digital Wallet 🏦
 
 > High-throughput, PCI-DSS compliant digital wallet backend — **500+ TPS, sub-200ms latency**
@@ -232,3 +233,6 @@ src/
 ## 📜 License
 
 Proprietary — Enterprise Digital Wallet © 2024
+=======
+# Enterprise-Digital-Wallet
+>>>>>>> 9b8e82e19c546f89950b11c242fe8866194ed940
