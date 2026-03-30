@@ -4,6 +4,7 @@ services:
     name: enterprise-wallet-api
     runtime: docker
     plan: free
+    healthCheckPath: /actuator/health
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: render
@@ -33,6 +34,8 @@ services:
         generateValue: true
       - key: ENCRYPTION_SALT
         generateValue: true
+      - key: JAVA_OPTS
+        value: "-Xmx384m -Xms384m"
 
   # ─── Frontend Service (Angular Static Site) ────────────────────────
   - type: web
@@ -41,6 +44,9 @@ services:
     rootDir: wallet-ui
     buildCommand: "npm install && npm run build"
     staticPublishPath: "dist/browser"
+    envVars:
+      - key: BACKEND_URL
+        value: "https://enterprise-wallet-api.onrender.com" # Update this if your URL is different
     headers:
       - path: "/*"
         name: Cache-Control

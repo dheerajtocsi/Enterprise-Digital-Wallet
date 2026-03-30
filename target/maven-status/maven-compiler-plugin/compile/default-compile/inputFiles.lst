@@ -1,4 +1,5 @@
 /Volumes/Tocsi/Enterprise Digital Wallet/src/main/java/com/enterprise/wallet/domain/repository/UserRepository.java
+/Volumes/Tocsi/Enterprise Digital Wallet/src/main/java/com/enterprise/wallet/controller/RootController.java
 /Volumes/Tocsi/Enterprise Digital Wallet/src/main/java/com/enterprise/wallet/domain/enums/LedgerEntryType.java
 /Volumes/Tocsi/Enterprise Digital Wallet/src/main/java/com/enterprise/wallet/exception/UnauthorizedException.java
 /Volumes/Tocsi/Enterprise Digital Wallet/src/main/java/com/enterprise/wallet/domain/enums/TransactionStatus.java
