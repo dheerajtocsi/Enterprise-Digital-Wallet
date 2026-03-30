@@ -7,10 +7,26 @@ services:
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: render
-      - key: DATABASE_URL
+      - key: DB_HOST
         fromDatabase:
           name: enterprise-wallet-db
-          property: connectionString
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: enterprise-wallet-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: enterprise-wallet-db
+          property: database
+      - key: DB_USER
+        fromDatabase:
+          name: enterprise-wallet-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: enterprise-wallet-db
+          property: password
       - key: JWT_SECRET
         generateValue: true
       - key: ENCRYPTION_KEY
@@ -22,8 +38,9 @@ services:
   - type: web
     name: enterprise-wallet-ui
     runtime: static
+    rootDirectory: wallet-ui
     buildCommand: "npm install && npm run build"
-    staticPublishPath: "wallet-ui/dist/wallet-ui/browser"
+    staticPublishPath: "dist/wallet-ui/browser"
     headers:
       - path: "/*"
         name: Cache-Control
