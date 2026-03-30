@@ -6,10 +6,10 @@ import java.math.BigDecimal;
 public class TransferRequest {
 
     @NotBlank(message = "Source wallet ID is required")
-    private String fromWalletId;
+    private String sourceWalletId;
 
-    @NotBlank(message = "Destination wallet address is required")
-    private String toWalletAddress;
+    @NotBlank(message = "Target wallet address is required")
+    private String targetWalletAddress;
 
     @NotNull(message = "Amount is required")
     @DecimalMin(value = "1.00", message = "Minimum transfer is 1.00")
@@ -25,10 +25,10 @@ public class TransferRequest {
 
     public TransferRequest() {}
 
-    public String getFromWalletId() { return fromWalletId; }
-    public void setFromWalletId(String fromWalletId) { this.fromWalletId = fromWalletId; }
-    public String getToWalletAddress() { return toWalletAddress; }
-    public void setToWalletAddress(String toWalletAddress) { this.toWalletAddress = toWalletAddress; }
+    public String getSourceWalletId() { return sourceWalletId; }
+    public void setSourceWalletId(String sourceWalletId) { this.sourceWalletId = sourceWalletId; }
+    public String getTargetWalletAddress() { return targetWalletAddress; }
+    public void setTargetWalletAddress(String targetWalletAddress) { this.targetWalletAddress = targetWalletAddress; }
     public BigDecimal getAmount() { return amount; }
     public void setAmount(BigDecimal amount) { this.amount = amount; }
     public String getDescription() { return description; }

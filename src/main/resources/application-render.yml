@@ -1,0 +1,47 @@
+spring:
+  config:
+    activate:
+      on-profile: render
+
+  # ─── PostgreSQL Production DB (Render) ──────────────────────────────────
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/walletdb}
+    username: ${DB_USER:}
+    password: ${DB_PASSWORD:}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 25
+      minimum-idle: 5
+      idle-timeout: 300000
+      connection-timeout: 20000
+      max-lifetime: 1200000
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          lob:
+            non_contextual_creation: true
+    show-sql: false
+
+  # ─── Redis (Render) ────────────────────────────────────────────────────────
+  data:
+    redis:
+      host: ${REDIS_HOST:redis}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      ssl:
+        enabled: true
+
+  # ─── Liquibase ──────────────────────────────────────────────────────────────
+  liquibase:
+    enabled: true
+    contexts: prod
+
+logging:
+  level:
+    com.enterprise.wallet: INFO
+    org.springframework.security: WARN

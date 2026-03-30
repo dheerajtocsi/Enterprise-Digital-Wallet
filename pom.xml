@@ -77,6 +77,12 @@
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
         </dependency>
+        <!-- PostgreSQL for Render production -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
 
         <!-- ==================== LIQUIBASE ==================== -->
         <dependency>
@@ -172,6 +178,13 @@
             <id>prod</id>
             <properties>
                 <spring.profiles.active>prod</spring.profiles.active>
+            </properties>
+        </profile>
+        <!-- Render production profile (PostgreSQL) -->
+        <profile>
+            <id>render</id>
+            <properties>
+                <spring.profiles.active>render</spring.profiles.active>
             </properties>
         </profile>
     </profiles>

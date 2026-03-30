@@ -97,8 +97,8 @@ class WalletTransactionServiceTest {
         when(transactionRepository.existsByIdempotencyKey(anyString())).thenReturn(false);
 
         TransferRequest request = new TransferRequest();
-        request.setFromWalletId("wallet-001");
-        request.setToWalletAddress("EDW-INR-12345678");
+        request.setSourceWalletId("wallet-001");
+        request.setTargetWalletAddress("EDW-INR-12345678");
         request.setAmount(new BigDecimal("100.00"));
 
         assertThatThrownBy(() -> transactionService.transfer("user-001", request))

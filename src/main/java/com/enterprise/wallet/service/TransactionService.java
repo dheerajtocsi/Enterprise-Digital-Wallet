@@ -126,9 +126,9 @@ public class TransactionService {
             return transactionRepository.findByIdempotencyKey(idempotencyKey)
                     .map(this::mapToResponse).orElseThrow();
         }
-        Wallet srcWallet = walletService.getWalletByIdLocked(request.getFromWalletId());
+        Wallet srcWallet = walletService.getWalletByIdLocked(request.getSourceWalletId());
         validateWalletActive(srcWallet, userId);
-        Wallet dstWallet = walletService.getWalletByAddress(request.getToWalletAddress());
+        Wallet dstWallet = walletService.getWalletByAddress(request.getTargetWalletAddress());
         if (!dstWallet.isActive()) {
             throw new BadRequestException("Destination wallet is not active");
         }

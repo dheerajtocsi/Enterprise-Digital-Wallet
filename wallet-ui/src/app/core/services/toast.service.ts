@@ -1,0 +1,38 @@
+import { Injectable, signal } from '@angular/core';
+
+export interface Toast {
+  id: string;
+  type: 'success' | 'error' | 'info' | 'warning';
+  title: string;
+  message?: string;
+  duration?: number;
+}
+
+@Injectable({ providedIn: 'root' })
+export class ToastService {
+  private _toasts = signal<Toast[]>([]);
+  readonly toasts = this._toasts.asReadonly();
+
+  private show(toast: Omit<Toast, 'id'>): void {
+    const id = crypto.randomUUID();
+    this._toasts.update(list => [...list, { ...toast, id }]);
+    setTimeout(() => this.remove(id), toast.duration ?? 4000);
+  }
+
+  success(title: string, message?: string): void {
+    this.show({ type: 'success', title, message });
+  }
+  error(title: string, message?: string): void {
+    this.show({ type: 'error', title, message, duration: 6000 });
+  }
+  info(title: string, message?: string): void {
+    this.show({ type: 'info', title, message });
+  }
+  warning(title: string, message?: string): void {
+    this.show({ type: 'warning', title, message });
+  }
+
+  remove(id: string): void {
+    this._toasts.update(list => list.filter(t => t.id !== id));
+  }
+}
