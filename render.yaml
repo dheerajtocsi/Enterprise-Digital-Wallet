@@ -40,7 +40,7 @@ services:
     runtime: static
     rootDir: wallet-ui
     buildCommand: "npm install && npm run build"
-    staticPublishPath: "dist/wallet-ui/browser"
+    staticPublishPath: "dist/browser"
     headers:
       - path: "/*"
         name: Cache-Control
