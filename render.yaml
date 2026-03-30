@@ -19,12 +19,12 @@ services:
         generateValue: true
 
   # ─── Frontend Service (Angular Static Site) ────────────────────────
-  - type: static
+  - type: web
     name: enterprise-wallet-ui
     runtime: static
     plan: free
     buildCommand: "npm install && npm run build"
-    publishDir: "wallet-ui/dist/wallet-ui/browser"
+    staticPublishPath: "wallet-ui/dist/wallet-ui/browser"
     headers:
       - path: "/*"
         name: Cache-Control
