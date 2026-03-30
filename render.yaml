@@ -38,7 +38,7 @@ services:
   - type: web
     name: enterprise-wallet-ui
     runtime: static
-    rootDirectory: wallet-ui
+    rootDir: wallet-ui
     buildCommand: "npm install && npm run build"
     staticPublishPath: "dist/wallet-ui/browser"
     headers:
