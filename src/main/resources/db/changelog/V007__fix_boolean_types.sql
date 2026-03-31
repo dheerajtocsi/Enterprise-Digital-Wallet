@@ -1,5 +1,7 @@
 --liquibase formatted sql
 --changeset enterprise:V007-v2 labels:fix
+--validCheckSum: 9:3bc9d00244c71a1282dbdaa3f6a1d333
+--validCheckSum: 9:675b9867fede413cc441d3d00dfae751
 --comment: Comprehensive type repair for PostgreSQL compatibility (Booleans, Integers, BigInts)
 
 -- 1. Fix User Table
