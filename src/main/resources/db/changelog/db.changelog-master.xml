@@ -11,5 +11,6 @@
     <include file="classpath:db/changelog/V004__create_ledger.sql"/>
     <include file="classpath:db/changelog/V005__create_refresh_tokens.sql"/>
     <include file="classpath:db/changelog/V006__create_indexes.sql"/>
+    <include file="classpath:db/changelog/V007__fix_boolean_types.sql"/>
 
 </databaseChangeLog>
