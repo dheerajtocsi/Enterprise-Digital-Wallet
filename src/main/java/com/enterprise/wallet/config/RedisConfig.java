@@ -27,6 +27,10 @@ import java.time.Duration;
 @EnableCaching
 public class RedisConfig {
 
+    public static final String CACHE_BALANCE = "balances";
+    public static final String CACHE_USER = "users";
+    public static final String CACHE_WALLETS = "wallets";
+
     @Bean
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory connectionFactory) {
         RedisTemplate<String, Object> template = new RedisTemplate<>();
