@@ -1,5 +1,6 @@
 --liquibase formatted sql
 --changeset enterprise:V001 labels:init
+--validCheckSum: 9:b04f3155ce4cb55c8d5d02ea86e8da28
 
 CREATE TABLE WALLET_USERS (
     USER_ID            VARCHAR(36)    NOT NULL,

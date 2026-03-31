@@ -1,0 +1,10 @@
+--liquibase formatted sql
+--changeset enterprise:V007 labels:fix
+--comment: Convert SMALLINT flags to BOOLEAN for PostgreSQL compatibility
+
+ALTER TABLE WALLET_USERS 
+    ALTER COLUMN IS_ACTIVE TYPE BOOLEAN USING IS_ACTIVE::boolean,
+    ALTER COLUMN IS_EMAIL_VERIFIED TYPE BOOLEAN USING IS_EMAIL_VERIFIED::boolean;
+
+ALTER TABLE REFRESH_TOKENS 
+    ALTER COLUMN IS_REVOKED TYPE BOOLEAN USING IS_REVOKED::boolean;

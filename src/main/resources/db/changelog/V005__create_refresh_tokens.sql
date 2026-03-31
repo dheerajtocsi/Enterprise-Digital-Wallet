@@ -1,5 +1,6 @@
 --liquibase formatted sql
 --changeset enterprise:V005 labels:init
+--validCheckSum: 9:4c6cc37050203bd1a7ecec259de55466
 
 CREATE TABLE REFRESH_TOKENS (
     TOKEN_ID    VARCHAR(36)    NOT NULL,
