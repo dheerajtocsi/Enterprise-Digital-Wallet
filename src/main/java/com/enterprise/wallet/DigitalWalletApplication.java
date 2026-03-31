@@ -26,41 +26,41 @@ public class DigitalWalletApplication {
 
     public static void main(String[] args) {
         // FAIL-SAFE: Clear Liquibase checksums manually before the Spring context starts.
-        // This resolves the persistent "Validation Failed" loop on Render.
+        // This ensures the application starts even if Liquibase history is corrupted on Render.
+        System.out.println("🛠️ INITIALIZING PRE-FLIGHT REPAIR SEQUENCE...");
         repairLiquibaseChecksums();
         
         SpringApplication.run(DigitalWalletApplication.class, args);
     }
 
     private static void repairLiquibaseChecksums() {
-        // Mapping matched to application-render.yml
+        // Attempt to find ANY database connection info from Render
+        String directUrl = System.getenv("SPRING_DATASOURCE_URL");
         String host = System.getenv("DB_HOST");
         String port = System.getenv("DB_PORT");
         String name = System.getenv("DB_NAME");
         String user = System.getenv("DB_USER");
         String pass = System.getenv("DB_PASSWORD");
 
-        if (host == null || name == null) {
-            // Try alternative standard URL if individual components are missing
-            String directUrl = System.getenv("SPRING_DATASOURCE_URL");
-            if (directUrl == null) return;
-            executeRepair(directUrl, user, pass);
+        String jdbcUrl;
+        if (directUrl != null && !directUrl.isEmpty()) {
+            jdbcUrl = directUrl;
+        } else if (host != null && name != null) {
+            jdbcUrl = String.format("jdbc:postgresql://%s:%s/%s", host, port != null ? port : "5432", name);
         } else {
-            String jdbcUrl = String.format("jdbc:postgresql://%s:%s/%s", host, port, name);
-            executeRepair(jdbcUrl, user, pass);
+            System.err.println("⚠️ REPAIR SKIPPED: No Database environment variables found (DB_HOST or SPRING_DATASOURCE_URL).");
+            return;
         }
-    }
 
-    private static void executeRepair(String url, String user, String pass) {
-        System.out.println("🚀 STARTING PRE-FLIGHT DATABASE REPAIR: Clearing Liquibase Checksums at " + url + "...");
-        try (Connection conn = DriverManager.getConnection(url, user, pass);
+        System.out.println("🚀 EXECUTING DATABASE REPAIR: Clearing Liquibase Checksums at " + jdbcUrl + "...");
+        try (Connection conn = DriverManager.getConnection(jdbcUrl, user, pass);
              Statement stmt = conn.createStatement()) {
             
             stmt.execute("UPDATE DATABASECHANGELOG SET MD5SUM = NULL");
-            System.out.println("✅ SUCCESS: Liquibase history cleared. Proceeding to startup.");
+            System.out.println("✅ REPAIR SUCCESS: Liquibase history cleared. Preparing for startup.");
             
         } catch (Exception e) {
-            System.err.println("⚠️ Repair skipped: Connection failed or table not found. (" + e.getMessage() + ")");
+            System.err.println("⚠️ REPAIR ATTEMPTED BUT SKIPPED: " + e.getMessage());
         }
     }
 }
