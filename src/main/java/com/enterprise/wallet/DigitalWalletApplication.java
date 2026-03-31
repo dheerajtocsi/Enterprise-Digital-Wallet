@@ -33,13 +33,26 @@ public class DigitalWalletApplication {
     }
 
     private static void repairLiquibaseChecksums() {
-        String url = System.getenv("SPRING_DATASOURCE_URL");
-        String user = System.getenv("SPRING_DATASOURCE_USERNAME");
-        String pass = System.getenv("SPRING_DATASOURCE_PASSWORD");
+        // Mapping matched to application-render.yml
+        String host = System.getenv("DB_HOST");
+        String port = System.getenv("DB_PORT");
+        String name = System.getenv("DB_NAME");
+        String user = System.getenv("DB_USER");
+        String pass = System.getenv("DB_PASSWORD");
 
-        if (url == null || url.isEmpty()) return;
+        if (host == null || name == null) {
+            // Try alternative standard URL if individual components are missing
+            String directUrl = System.getenv("SPRING_DATASOURCE_URL");
+            if (directUrl == null) return;
+            executeRepair(directUrl, user, pass);
+        } else {
+            String jdbcUrl = String.format("jdbc:postgresql://%s:%s/%s", host, port, name);
+            executeRepair(jdbcUrl, user, pass);
+        }
+    }
 
-        System.out.println("🚀 STARTING PRE-FLIGHT DATABASE REPAIR: Clearing Liquibase Checksums...");
+    private static void executeRepair(String url, String user, String pass) {
+        System.out.println("🚀 STARTING PRE-FLIGHT DATABASE REPAIR: Clearing Liquibase Checksums at " + url + "...");
         try (Connection conn = DriverManager.getConnection(url, user, pass);
              Statement stmt = conn.createStatement()) {
             
@@ -47,7 +60,7 @@ public class DigitalWalletApplication {
             System.out.println("✅ SUCCESS: Liquibase history cleared. Proceeding to startup.");
             
         } catch (Exception e) {
-            System.err.println("⚠️ Repair skipped: Table not found or connection failed. (" + e.getMessage() + ")");
+            System.err.println("⚠️ Repair skipped: Connection failed or table not found. (" + e.getMessage() + ")");
         }
     }
 }
