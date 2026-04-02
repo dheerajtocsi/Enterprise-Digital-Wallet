@@ -2,7 +2,6 @@ package com.enterprise.wallet.config;
 
 import com.enterprise.wallet.security.JwtAuthenticationFilter;
 import com.enterprise.wallet.security.WalletUserDetailsService;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -33,8 +32,13 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final WalletUserDetailsService userDetailsService;
 
-    @Value("${app.cors.allowed-origins}")
-    private List<String> allowedOrigins;
+    private final List<String> allowedOrigins = List.of(
+            "http://localhost:4200", 
+            "http://localhost:3000", 
+            "http://localhost:8080",
+            "https://enterprise-wallet-api.onrender.com",
+            "*"
+    );
 
     public SecurityConfig(JwtAuthenticationFilter jwtAuthFilter,
                           WalletUserDetailsService userDetailsService) {
