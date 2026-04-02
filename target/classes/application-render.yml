@@ -41,7 +41,18 @@ spring:
     enabled: true
     contexts: prod
 
+# ─── Management & Health (Silencing Redis Spam) ──────────────────────────────
+management:
+  health:
+    redis:
+      enabled: false  # Stop the background 'Connection Refused' spam
+  endpoint:
+    health:
+      show-details: when_authorized
+
 logging:
   level:
     com.enterprise.wallet: INFO
     org.springframework.security: WARN
+    org.springframework.data.redis: ERROR # Mute redis connection warnings
+    io.lettuce.core: ERROR                # Mute lettuce driver warnings
