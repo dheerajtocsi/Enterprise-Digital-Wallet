@@ -1,6 +1,5 @@
 package com.enterprise.wallet.service;
 
-import com.enterprise.wallet.config.RedisConfig;
 import com.enterprise.wallet.domain.entity.User;
 import com.enterprise.wallet.domain.entity.Wallet;
 import com.enterprise.wallet.domain.enums.Currency;
@@ -27,6 +26,8 @@ import java.util.stream.Collectors;
 public class WalletService {
 
     private static final Logger log = LoggerFactory.getLogger(WalletService.class);
+
+    public static final String CACHE_BALANCE = "balances";
 
     private final WalletRepository walletRepository;
     private final UserRepository userRepository;
@@ -76,7 +77,7 @@ public class WalletService {
         return mapToResponse(wallet);
     }
 
-    @Cacheable(value = RedisConfig.CACHE_BALANCE, key = "#walletId")
+    @Cacheable(value = CACHE_BALANCE, key = "#walletId")
     @Transactional(readOnly = true)
     public BigDecimal getBalance(String walletId, String userId) {
         Wallet wallet = walletRepository.findById(walletId)
@@ -86,7 +87,7 @@ public class WalletService {
         return wallet.getBalance();
     }
 
-    @CacheEvict(value = RedisConfig.CACHE_BALANCE, key = "#walletId")
+    @CacheEvict(value = CACHE_BALANCE, key = "#walletId")
     public void evictBalanceCache(String walletId) {
         log.debug("Balance cache evicted for wallet: {}", walletId);
     }
