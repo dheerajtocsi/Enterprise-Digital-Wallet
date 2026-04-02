@@ -32,14 +32,6 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final WalletUserDetailsService userDetailsService;
 
-    private final List<String> allowedOrigins = List.of(
-            "http://localhost:4200", 
-            "http://localhost:3000", 
-            "http://localhost:8080",
-            "https://enterprise-wallet-api.onrender.com",
-            "*"
-    );
-
     public SecurityConfig(JwtAuthenticationFilter jwtAuthFilter,
                           WalletUserDetailsService userDetailsService) {
         this.jwtAuthFilter = jwtAuthFilter;
@@ -70,7 +62,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(allowedOrigins);
+        config.setAllowedOriginPatterns(List.of("*"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setExposedHeaders(List.of("Authorization", "X-Request-ID"));
