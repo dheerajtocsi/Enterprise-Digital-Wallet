@@ -32,7 +32,7 @@ export interface PageResponse<T> {
 
 // ── Auth Models ────────────────────────────────────────────────
 export interface LoginRequest {
-  username: string;
+  emailOrUsername: string;
   password: string;
 }
 

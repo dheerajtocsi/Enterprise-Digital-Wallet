@@ -31,12 +31,12 @@ import { ToastService } from '../../../core/services/toast.service';
 
           <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
             <div class="form-group">
-              <label class="form-label" for="username">Username</label>
-              <input id="username" type="text" class="form-control"
-                     formControlName="username" placeholder="Enter your username"
+              <label class="form-label" for="emailOrUsername">Email or Username</label>
+              <input id="emailOrUsername" type="text" class="form-control"
+                     formControlName="emailOrUsername" placeholder="Enter your email or username"
                      autocomplete="username" />
-              @if (f['username'].invalid && f['username'].touched) {
-                <span class="form-error">⚠ Username is required</span>
+              @if (f['emailOrUsername'].invalid && f['emailOrUsername'].touched) {
+                <span class="form-error">⚠ Required field</span>
               }
             </div>
 
@@ -163,7 +163,7 @@ export class LoginComponent {
   showPass = signal(false);
 
   form = this.fb.group({
-    username: ['', Validators.required],
+    emailOrUsername: ['', Validators.required],
     password: ['', Validators.required]
   });
 
